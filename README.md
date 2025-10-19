@@ -2,11 +2,17 @@
 
 A full-stack real-time chat application built with modern technologies, featuring friend requests, real-time messaging, and message reactions.
 
+### Demo Video
+
+
 ## 🏗️ Architecture
 
 This project follows a **monorepo architecture** using Turborepo with clear separation of concerns:
 
+### Demo Video:
+https://github.com/user-attachments/assets/0b6a1157-fdea-480d-a180-392ec351558f
 ```
+
 Real-Time Chat App/
 ├── apps/
 │   ├── frontend/          # Next.js App Router with TypeScript & Tailwind
