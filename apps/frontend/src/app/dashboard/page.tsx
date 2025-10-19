@@ -20,6 +20,9 @@ interface FriendRequest {
 }
 
 export default function Dashboard() {
+  const [currentUser, setCurrentUser] = useState<{ username: string } | null>(
+    null
+  );
   const [friends, setFriends] = useState<Friend[]>([]);
   const [requests, setRequests] = useState<FriendRequest[]>([]);
   const [selectedFriend, setSelectedFriend] = useState<Friend | null>(null);
@@ -40,6 +43,7 @@ export default function Dashboard() {
       return;
     }
 
+    setCurrentUser(user);
     loadFriends();
     loadRequests();
   }, []);
@@ -189,7 +193,7 @@ export default function Dashboard() {
         <div className="p-4 border-b flex justify-between items-center">
           <div>
             <h1 className="text-xl font-bold">ChatApp</h1>
-            <p className="text-sm text-gray-600">@{auth.getUser()?.username}</p>
+            <p className="text-sm text-gray-600">@{currentUser?.username}</p>
           </div>
           <div className="flex gap-2">
             <button
