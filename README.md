@@ -1,16 +1,11 @@
 # Real-Time Chat Application
 
 A full-stack real-time chat application built with modern technologies, featuring friend requests, real-time messaging, and message reactions.
-
-### Demo Video
-
-
-## 🏗️ Architecture
-
-This project follows a **monorepo architecture** using Turborepo with clear separation of concerns:
-
 ### Demo Video:
 https://github.com/user-attachments/assets/0b6a1157-fdea-480d-a180-392ec351558f
+
+## 🏗️ Architecture
+This project follows a **monorepo architecture** using Turborepo with clear separation of concerns:
 ```
 
 Real-Time Chat App/
