@@ -89,9 +89,9 @@ router.get('/', authenticateToken, async (req: AuthRequest, res) => {
       }
     });
 
-    const friendList = friends.map(f => 
-      f.senderId === userId ? f.receiver : f.sender
-    );
+    const friendList = friends.map((f) => {
+      return f.senderId === userId ? f.receiver : f.sender;
+    });
 
     res.json(friendList);
   } catch (error) {
