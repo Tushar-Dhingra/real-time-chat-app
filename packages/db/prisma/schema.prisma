@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  avatar    String?
+  status    String   @default("Hey there! I am using ChatApp.")
+  isOnline  Boolean  @default(false)
+  lastSeen  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sentRequests     FriendRequest[] @relation("RequestSender")
+  receivedRequests FriendRequest[] @relation("RequestReceiver")
+  sentMessages     Message[]       @relation("MessageSender")
+  receivedMessages Message[]       @relation("MessageReceiver")
+  reactions        Reaction[]
+
+  @@map("users")
+}
+
+model FriendRequest {
+  id         String            @id @default(cuid())
+  senderId   String
+  receiverId String
+  status     FriendshipStatus  @default(PENDING)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+
+  sender   User @relation("RequestSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("RequestReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@map("friend_requests")
+}
+
+model Message {
+  id         String      @id @default(cuid())
+  content    String
+  type       MessageType @default(TEXT)
+  senderId   String
+  receiverId String
+  isRead     Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  sender    User       @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver  User       @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  reactions Reaction[]
+
+  @@map("messages")
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  emoji     String
+  messageId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId])
+  @@map("reactions")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VOICE
+}
