@@ -3,6 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:frontend": "turbo run db:generate --filter=@chat/db && turbo run build --filter=@chat/frontend",
+    "build:backend": "turbo run db:generate --filter=@chat/db && turbo run build --filter=@chat/backend",
+    "build:ws": "turbo run build --filter=@chat/ws",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
