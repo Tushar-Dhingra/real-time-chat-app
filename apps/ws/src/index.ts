@@ -59,10 +59,7 @@ wss.on('connection', (ws, req) => {
   }
 });
 
-// Subscribe to Redis channels
-subscriber.subscribe('friend-request', 'friend-response', 'new-message', 'message-reaction');
-
-subscriber.on('message', (channel, message) => {
+function handleRedisMessage(channel: string, message: string) {
   try {
     const data = JSON.parse(message);
     const targetWs = clients.get(data.receiverId);
@@ -73,6 +70,14 @@ subscriber.on('message', (channel, message) => {
   } catch (error) {
     console.error('Error processing Redis message:', error);
   }
-});
+}
+
+// Subscribe to Redis channels
+(async () => {
+  await subscriber.subscribe('friend-request', handleRedisMessage);
+  await subscriber.subscribe('friend-response', handleRedisMessage);
+  await subscriber.subscribe('new-message', handleRedisMessage);
+  await subscriber.subscribe('message-reaction', handleRedisMessage);
+})();
 
 console.log('WebSocket server running on port 3002');
