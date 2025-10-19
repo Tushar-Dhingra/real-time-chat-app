@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import toast from 'react-hot-toast';
@@ -12,6 +12,13 @@ export default function AuthPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+  const user = auth.getUser();
+  if (user) {
+    router.push('/dashboard');
+  }
+}, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
